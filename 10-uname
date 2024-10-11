@@ -1,0 +1,34 @@
+#!/bin/sh
+
+echo ""
+
+# Récupérer les valeurs système dynamiquement
+system_load=$(uptime | awk -F 'load average:' '{ print $2 }' | awk '{ print $1 }' | tr -d ','| tr -d ',')
+processes=$(ps aux | wc -l)
+disk_usage=$(df -h / | grep / | awk '{print $5 " of " $2 "B"}')
+users_logged_in=$(who | wc -l)
+memory_usage=$(free -m | awk '/Mem:/ { printf("%.2f%%", $3/$2 * 100.0) }')
+ipv4_address=$(hostname -I | awk '{print $1}')
+swap_usage=$(free -m | awk '/Swap:/ { printf("%.2f%%", $3/$2 * 100.0) }')
+
+# Fonction pour ajouter des espaces pour l'alignement
+align_text() {
+    printf "%-15s %-18s %-23s %s\n" "$1" "$2" "$3" "$4"
+}
+
+# Afficher l'en-tête
+echo " System information as of $(date)"
+echo ""
+
+# Afficher les informations système avec la mise en page souhaitée
+align_text "  System load:" "$system_load" "Processes:" "$processes"
+
+align_text "  Usage of /:" "$disk_usage" "Users logged in:" "$users_logged_in"
+
+align_text "  Memory usage:" "$memory_usage" "IPv4 address for ens3:" "$ipv4_address"
+
+align_text "  Swap usage:" "$swap_usage"
+
+# Ajouter le message de fin
+echo ""
+echo "  => / is using $disk_usage"
