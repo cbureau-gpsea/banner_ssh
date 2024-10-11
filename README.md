@@ -35,7 +35,7 @@ To display the next banner, replace the text by this one in (*/etc/motd*) :
 ###########################################################################################
 ```
 
-And to display the next informations on your computer, like this :
+And to display informations on your computer, like this :
 
 ```plaintext
 
